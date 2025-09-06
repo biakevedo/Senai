@@ -23,10 +23,10 @@ public class ProdutoController {
     // Listar todos
     @GetMapping
     public ResponseEntity<List<Produto>> findAll(){
-        // pegar a lista de clientes
-        List<Produto> produtos = produtoService.listarTodos();
+        // pegar a lista
+        List<Produto> produto = produtoService.listarTodos();
 
-        return ResponseEntity.ok(produtos);
+        return ResponseEntity.ok(produto);
     }
 
 }

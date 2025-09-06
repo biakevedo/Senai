@@ -17,7 +17,7 @@ public class ClienteService {
         clienteRepository = repo;
     }
 
-    // listar todos os clientes
+    // listar todos
     public List<Cliente> listarTodos(){
 
         return clienteRepository.findAll();
