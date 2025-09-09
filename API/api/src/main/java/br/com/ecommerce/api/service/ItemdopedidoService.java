@@ -1,7 +1,6 @@
 package br.com.ecommerce.api.service;
 
 import br.com.ecommerce.api.model.Itemdopedido;
-import br.com.ecommerce.api.model.Pedido;
 import br.com.ecommerce.api.repository.ItemdopedidoRepository;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +24,9 @@ public class ItemdopedidoService {
 
         return itemdopedidoRepository.findAll();
     }
-
+    // insert into bla bla bla
+    public Itemdopedido cadastrarItemdopedido(Itemdopedido itemdopedido){
+        return itemdopedidoRepository.save(itemdopedido);
+    }
 
 }

@@ -22,6 +22,11 @@ public class ClienteService {
 
         return clienteRepository.findAll();
     }
+// insert into bla bla bla
+    public Cliente cadastrarCliente(Cliente cl){
+        return clienteRepository.save(cl);
+    }
+
 
 
 

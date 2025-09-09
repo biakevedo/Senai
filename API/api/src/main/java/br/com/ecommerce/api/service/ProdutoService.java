@@ -1,6 +1,7 @@
 package br.com.ecommerce.api.service;
 
 
+import br.com.ecommerce.api.model.Cliente;
 import br.com.ecommerce.api.model.Produto;
 import br.com.ecommerce.api.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,10 @@ public class ProdutoService {
 
         return produtoRepository.findAll();
     }
-
+    // insert into bla bla bla
+    public Produto cadastrarProduto(Produto produto){
+        return produtoRepository.save(produto);
+    }
 
 
 }
