@@ -22,12 +22,28 @@ public class ClienteService {
 
         return clienteRepository.findAll();
     }
-// insert into bla bla bla
-    public Cliente cadastrarCliente(Cliente cl){
-        return clienteRepository.save(cl);
+    // insert into bla bla bla
+    public Cliente cadastrarCliente(Cliente cliente){
+        return clienteRepository.save(cliente);
     }
 
+    public Cliente buscarPorId(Integer id){
+        return clienteRepository.findById(id).orElse(null);
+    }
+    // para excluir
+    public Cliente deletarCliente(Integer id){
+        // 1 verificar se o cliente existe
+        Cliente cliente = buscarPorId(id);
 
+        // 2 se nao existir, retorno nulo
+        if (cliente == null){
+            return null;
+        }
+
+        // 3 e se existir, excluo
+        clienteRepository.delete(cliente);
+        return cliente;
+    }
 
 
 }

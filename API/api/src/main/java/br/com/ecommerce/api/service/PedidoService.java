@@ -1,5 +1,6 @@
 package br.com.ecommerce.api.service;
 
+import br.com.ecommerce.api.model.Cliente;
 import br.com.ecommerce.api.model.Pedido;
 import br.com.ecommerce.api.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,12 @@ public class PedidoService {
 
         return pedidoRepository.findAll();
     }
-
+    // insert into bla bla bla
+    public static Pedido cadastrarPedido(Pedido pedido){
+        return pedidoRepository.save(pedido);
+    }
 
 
 }
+
 
