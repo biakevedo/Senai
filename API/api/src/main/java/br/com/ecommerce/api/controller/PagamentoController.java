@@ -1,10 +1,8 @@
 package br.com.ecommerce.api.controller;
 
-import br.com.ecommerce.api.model.Cliente;
-import br.com.ecommerce.api.model.Itemdopedido;
 import br.com.ecommerce.api.model.Pagamento;
-import br.com.ecommerce.api.service.ItemdopedidoService;
 import br.com.ecommerce.api.service.PagamentoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,33 +11,55 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/pagamento")
 public class PagamentoController {
-    // controller > service
 
-    private PagamentoService pagamentoService;
-    public PagamentoController(PagamentoService service){
-        PagamentoService pagamentoService = service;
+    private final PagamentoService pagamentoService;
+
+    // Construtor para injeção de dependência
+    public PagamentoController(PagamentoService service) {
+        this.pagamentoService = service;
     }
-    // Listar todos
+
+    // Listar todos os pagamentos
     @GetMapping
     public ResponseEntity<List<Pagamento>> findAll() {
-        // pegar a lista
+        // Obter a lista de pagamento
         List<Pagamento> pagamento = pagamentoService.listarTodos();
-
         return ResponseEntity.ok(pagamento);
     }
 
+    // Cadastrar um novo pagamento
     @PostMapping
-    public ResponseEntity<Pagamento> cadastrarPagamento(
-            @RequestBody Pagamento pagamento
-    ) {
-
-
-        // tentar cadastrar
+    public ResponseEntity<Pagamento> cadastrarPagamento(@RequestBody Pagamento pagamento) {
+        // Tentar cadastrar o pagamento
         pagamentoService.cadastrarPagamento(pagamento);
-        // codigo 200 - ok
+        // Retornar com o status 200 OK
         return ResponseEntity.ok(pagamento);
-
     }
+    // Buscar pagamento por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<?> buscarPagamentoPorID(@PathVariable Integer id) {
+        Pagamento pagamento = pagamentoService.buscarPorId(id);
+        // Se o pagamnto não for encontrado, retorna
 
+        if (pagamento == null){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("Pagamento " + id + "não encontrado.");
+        }
+        // Se for encontrado
 
+        return ResponseEntity.ok(pagamento);
+    }
+    // Deletar Pagamento por ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletarPagamentoPorID(@PathVariable Integer id) {
+        // Verifica se o pagamento existe
+        Pagamento pagamento = pagamentoService.buscarPorId(id);
+
+        // Se o pagamento não for encontrado, retorna
+        if (pagamento == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pagamento " + id + "não encontrado.");
+        }
+        // Caso seja encontrado, retorna 200
+        return ResponseEntity.ok(pagamento);
+    }
 }

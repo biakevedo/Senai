@@ -5,71 +5,77 @@ import br.com.ecommerce.api.service.ClienteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
 
 @RestController
-// link do controller
 @RequestMapping("/api/clientes")
 public class ClienteController {
-    // controller > service
 
-    private ClienteService clienteService;
+    private final ClienteService clienteService;
+    private final ResponseEntityExceptionHandler responseEntityExceptionHandler;
 
-    public ClienteController(ClienteService service) {
-        clienteService = service;
+    // Construtor para injeção de dependência
+    public ClienteController(ClienteService service, ResponseEntityExceptionHandler responseEntityExceptionHandler) {
+        this.clienteService = service;
+        this.responseEntityExceptionHandler = responseEntityExceptionHandler;
     }
 
-    // Listar todos
+    // Listar todos os clientes
     @GetMapping
     public ResponseEntity<List<Cliente>> findAll() {
-        // pegar a lista de clientes
         List<Cliente> clientes = clienteService.listarTodos();
-
         return ResponseEntity.ok(clientes);
     }
 
+    // Cadastrar um novo cliente
     @PostMapping
-    public ResponseEntity<Cliente> cadastrarCliente(
-            // recebe dados pelo corpo
-            @RequestBody Cliente cliente
-    ) {
-
-
-        // tentar cadastrar o cliente
+    public ResponseEntity<Cliente> cadastrarCliente(@RequestBody Cliente cliente) {
         clienteService.cadastrarCliente(cliente);
-        // codigo 200 - ok
-        return ResponseEntity.ok(cliente);
-        // codigo 201 - created
-       // return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
+        // Código 201 - Created
+        return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
     }
 
-    // buscar cliente por id
-    // get
+    // Buscar cliente por ID
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarClientePorId(@PathVariable Integer id) {
-        // Tentar encontrar o cliente pelo id
         Cliente cliente = clienteService.buscarPorId(id);
 
         // Se o cliente não for encontrado, retorna erro 404
         if (cliente == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente " + id + " não encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Cliente " + id + " não encontrado");
         }
 
-        // Se o cliente for encontrado, retorna com o cliente
+        // Se o cliente for encontrado, retorna o cliente com status 200
         return ResponseEntity.ok(cliente);
     }
 
+    // Deletar cliente por ID
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletarClientePorId(@PathVariable Integer id) {
-    // 1 verifico se o cliente existe
+        // Verifica se o cliente existe
         Cliente cliente = clienteService.buscarPorId(id);
 
-        // 2 se não existir retorno erro
-        if (cliente == null) {return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente " + id + " não encontrado");
+        // Se o cliente não for encontrado, retorna erro 404
+        if (cliente == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Cliente " + id + " não encontrado");
         }
 
-        // 3 se existir, retorno ok
+        // Caso o cliente exista, retorna um status 200 OK
         return ResponseEntity.ok(cliente);
+    }
+    @PutMapping("/id")
+    public ResponseEntity<?> atualizarClientePorId(@PathVariable Integer id,@RequestBody Cliente clienteNovo) {
+        // Tento atualizar o cliente
+        Cliente cl = clienteService.atualizarCliente(id, clienteNovo);
+        // Se não achar...
+        if cl == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente " + id + "não encontrado");
+        }
+        // Se achar, retorno ok
+        return ResponseEntity.ok(cl);
     }
 }

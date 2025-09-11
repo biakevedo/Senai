@@ -1,34 +1,48 @@
 package br.com.ecommerce.api.service;
 
-import br.com.ecommerce.api.model.Cliente;
 import br.com.ecommerce.api.model.Pedido;
 import br.com.ecommerce.api.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static org.antlr.v4.runtime.tree.xpath.XPath.findAll;
-
 @Service
-
 public class PedidoService {
-    private static PedidoRepository pedidoRepository = null;
 
-    public PedidoService(PedidoRepository repo) {
-        pedidoRepository = repo;
+    private final PedidoRepository pedidoRepository;
+
+    // Construtor para injeção de dependência
+    public PedidoService(PedidoRepository pedidoRepository) {
+        this.pedidoRepository = pedidoRepository;
     }
 
-
-    public static List<Pedido> listarTodos(){
-
+    // Listar todos os pedidos
+    public List<Pedido> listarTodos() {
         return pedidoRepository.findAll();
     }
-    // insert into bla bla bla
-    public static Pedido cadastrarPedido(Pedido pedido){
+
+    // Cadastrar um novo pedido
+    public Pedido cadastrarPedido(Pedido pedido) {
         return pedidoRepository.save(pedido);
     }
 
+    // Buscar pedido por ID
+    public Pedido buscarPorId(Integer id) {
+        return pedidoRepository.findById(id).orElse(null);
+    }
 
+    // Deletar pedido
+    public Pedido deletarPedido(int id) {
+
+        // Verificar se o pedido existe
+        Pedido pedido = buscarPorId(id);
+
+        // Se o pedido existir, retorna
+        if (pedido != null) {
+            return null;
+        }
+        // Se existir, excluir pedido
+        pedidoRepository.delete(pedido);
+        return pedido;
+    }
 }
-
-

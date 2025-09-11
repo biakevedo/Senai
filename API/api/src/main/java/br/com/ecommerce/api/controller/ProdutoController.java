@@ -2,6 +2,7 @@ package br.com.ecommerce.api.controller;
 
 import br.com.ecommerce.api.model.Produto;
 import br.com.ecommerce.api.service.ProdutoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,40 +10,58 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/produto")
-
-
 public class ProdutoController {
-    // controller > service
 
-    private ProdutoService produtoService;
+    private final ProdutoService produtoService;
 
+    // Construtor para injeção de dependência
     public ProdutoController(ProdutoService service) {
-        produtoService = service;
+        this.produtoService = service;
     }
 
-    // Listar todos
+    // Listar todos os produtos
     @GetMapping
     public ResponseEntity<List<Produto>> findAll() {
-        // pegar a lista
-        List<Produto> produto = produtoService.listarTodos();
-
-        return ResponseEntity.ok(produto);
+        // Obter a lista de produtos
+        List<Produto> produtos = produtoService.listarTodos();
+        return ResponseEntity.ok(produtos);
     }
 
+    // Cadastrar um novo produto
     @PostMapping
-    public ResponseEntity<Produto> cadastrarProduto(
-            @RequestBody Produto produto
-    ) {
-
-
-        // tentar cadastrar o produto
+    public ResponseEntity<Produto> cadastrarProduto(@RequestBody Produto produto) {
+        // Tentar cadastrar o produto
         produtoService.cadastrarProduto(produto);
-        // codigo 200 - ok
+        // Retornar com o status 201 (Created)
+        return ResponseEntity.status(201).body(produto);
+    }
+    // Buscar produto por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<?> buscarProduto(@PathVariable Integer id) {
+        Produto produto = produtoService.buscarPorId(id);
+
+        // Se o produto não for encontrado
+        if (produto == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto " + id + " não encontrado");
+        }
+        // Se for encontrado
         return ResponseEntity.ok(produto);
-        // codigo 201 - created
-        // return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
     }
 
+    // Deletar produto
+    @DeleteMapping("/id")
+    public ResponseEntity<?> deletarProduto(@RequestParam Integer id) {
+        // Verifica se o produto existe
+        Produto produto = produtoService.buscarPorId(id);
+
+        // Se não for encontrado
+        if (produto == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto " + id + " não foi encontrado");
+        }
+        // Caso exista, retorna
+        return ResponseEntity.ok(produto);
+    }
 
 }
+
 

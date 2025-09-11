@@ -6,44 +6,61 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static org.antlr.v4.runtime.tree.xpath.XPath.findAll;
-
 @Service
-
 public class ClienteService {
+
     private final ClienteRepository clienteRepository;
 
+    // Construtor para injeção de dependência
     public ClienteService(ClienteRepository repo) {
-        clienteRepository = repo;
+        this.clienteRepository = repo;
     }
 
-    // listar todos
-    public List<Cliente> listarTodos(){
-
+    // Listar todos os clientes
+    public List<Cliente> listarTodos() {
         return clienteRepository.findAll();
     }
-    // insert into bla bla bla
-    public Cliente cadastrarCliente(Cliente cliente){
+
+    // Cadastrar um novo cliente
+    public Cliente cadastrarCliente(Cliente cliente) {
         return clienteRepository.save(cliente);
     }
 
-    public Cliente buscarPorId(Integer id){
+    // Buscar cliente por ID
+    public Cliente buscarPorId(Integer id) {
         return clienteRepository.findById(id).orElse(null);
     }
-    // para excluir
-    public Cliente deletarCliente(Integer id){
-        // 1 verificar se o cliente existe
+
+    // Deletar cliente
+    public Cliente deletarCliente(Integer id) {
+        // Verificar se o cliente existe
         Cliente cliente = buscarPorId(id);
 
-        // 2 se nao existir, retorno nulo
-        if (cliente == null){
+        // Se o cliente não existir, retorna null
+        if (cliente == null) {
             return null;
         }
 
-        // 3 e se existir, excluo
+        // Se existir, excluir o cliente
         clienteRepository.delete(cliente);
         return cliente;
     }
 
+    // Atualizar/Editar cliente
+    public Cliente atualizarCliente(Integer id, Cliente clienteNovo){
+        // Procurar quem eu quero atualizar
+        Cliente clienteAntigo = buscarPorId(id);
 
+        // Se eu não achar, retorno nulo
+        if (clienteAntigo == null) {
+            return null;
+        }
+        // Se existir...
+        clienteAntigo.setSenha(clienteNovo.getSenha());
+        clienteAntigo.setNomeCompleto(clienteNovo.getNomeCompleto());
+        clienteAntigo.setDataCadastro(clienteNovo.getDataCadastro());
+        clienteAntigo.setEmail(clienteNovo.getEmail());
+        clienteAntigo.setTelefone(clienteNovo.getTelefone());
+        return clienteRepository.save(clienteAntigo);
+    }
 }

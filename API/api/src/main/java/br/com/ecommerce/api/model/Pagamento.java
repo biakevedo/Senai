@@ -9,21 +9,21 @@ import lombok.Setter;
 @Entity
 @Table(name = "pagamento", schema = "ecommerce")
 public class Pagamento {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pagamento_id", nullable = false)
-    private java.lang.Integer id;
+    private Integer id;
 
-    @Column(name = "status", nullable = false, length = Integer.MAX_VALUE)
-    private java.lang.String status;
+    @Column(name = "status", nullable = false)
+    private String status;
 
     @Column(name = "data_pedido", nullable = false)
     private java.time.Instant dataPedido;
 
     @Column(name = "pedido_id", nullable = false)
-    private java.lang.Integer pedidoId;
+    private Integer pedidoId;
 
-    @Column(name = "forma_pagamento", nullable = false, length = Integer.MAX_VALUE)
-    private java.lang.String formaPagamento;
-
+    @Column(name = "forma_pagamento", nullable = false)
+    private String formaPagamento;
 }
