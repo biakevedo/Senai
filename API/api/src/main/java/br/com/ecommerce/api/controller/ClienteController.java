@@ -14,12 +14,12 @@ import java.util.List;
 public class ClienteController {
 
     private final ClienteService clienteService;
-    private final ResponseEntityExceptionHandler responseEntityExceptionHandler;
+
 
     // Construtor para injeção de dependência
-    public ClienteController(ClienteService service, ResponseEntityExceptionHandler responseEntityExceptionHandler) {
+    public ClienteController(ClienteService service) {
         this.clienteService = service;
-        this.responseEntityExceptionHandler = responseEntityExceptionHandler;
+
     }
 
     // Listar todos os clientes
@@ -72,7 +72,7 @@ public class ClienteController {
         // Tento atualizar o cliente
         Cliente cl = clienteService.atualizarCliente(id, clienteNovo);
         // Se não achar...
-        if cl == null) {
+        if (cl == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente " + id + "não encontrado");
         }
         // Se achar, retorno ok

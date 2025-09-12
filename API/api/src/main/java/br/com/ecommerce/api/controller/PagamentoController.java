@@ -62,4 +62,18 @@ public class PagamentoController {
         // Caso seja encontrado, retorna 200
         return ResponseEntity.ok(pagamento);
     }
+    @PutMapping("/pagamento/{id}")
+    public ResponseEntity<?> atualizarPagamentoPorId(@PathVariable Integer id, @RequestBody Pagamento pagamentoNovo) {
+        // Tento atualizar o pagamento
+        Pagamento pagamento = pagamentoService.atualizarPagamento(id, pagamentoNovo);
+
+        // Se não achar...
+        if (pagamento == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pagamento " + id + " não encontrado");
+        }
+
+        // Se achar, retorno ok
+        return ResponseEntity.ok(pagamento);
+    }
+
 }

@@ -1,5 +1,6 @@
 package br.com.ecommerce.api.service;
 
+import br.com.ecommerce.api.model.Cliente;
 import br.com.ecommerce.api.model.Pagamento;
 import br.com.ecommerce.api.repository.PagamentoRepository;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,23 @@ public class PagamentoService {
         // Se existir, excluir o pagamento
         pagamentoRepository.delete(pagamento);
         return pagamento;
+    }
+    // Atualizar/Editar
+    public Pagamento atualizarPagamento(Integer id, Pagamento pagamentoNovo){
+        // Procurar quem eu quero atualizar
+        Pagamento pagamentoAntigo = buscarPorId(id);
+
+        // Se eu não achar, retorno nulo
+        if (pagamentoAntigo == null) {
+            return null;
+        }
+        // Se existir...
+        pagamentoAntigo.setFormaPagamento(pagamentoNovo.getFormaPagamento());
+        pagamentoAntigo.setStatus(pagamentoNovo.getStatus());
+        pagamentoAntigo.setPedidoId(pagamentoNovo.getPedidoId());
+        pagamentoAntigo.setDataPedido(pagamentoNovo.getDataPedido());
+        return pagamentoRepository.save(pagamentoAntigo);
+
     }
 }
 

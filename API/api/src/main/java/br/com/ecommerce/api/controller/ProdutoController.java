@@ -61,6 +61,19 @@ public class ProdutoController {
         // Caso exista, retorna
         return ResponseEntity.ok(produto);
     }
+    @PutMapping("/produto/{id}")
+    public ResponseEntity<?> atualizarProdutoPorId(@PathVariable Integer id, @RequestBody Produto produtoNovo) {
+        // Tento atualizar o produto
+        Produto produto = produtoService.atualizarProduto(id, produtoNovo);
+
+        // Se não achar...
+        if (produto == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto " + id + " não encontrado");
+        }
+
+        // Se achar, retorno ok
+        return ResponseEntity.ok(produto);
+    }
 
 }
 

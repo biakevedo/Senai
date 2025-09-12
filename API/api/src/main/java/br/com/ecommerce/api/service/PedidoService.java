@@ -45,4 +45,22 @@ public class PedidoService {
         pedidoRepository.delete(pedido);
         return pedido;
     }
+    // Atualizar/Editar pedido
+    public Pedido atualizarPedido(Integer id, Pedido pedidoNovo){
+        // Procurar quem eu quero atualizar
+        Pedido pedidoAntigo = buscarPorId(id);
+
+        // Se eu não achar, retorno nulo
+        if (pedidoAntigo == null) {
+            return null;
+        }
+
+        // Se existir...
+        pedidoAntigo.setDataPedido(pedidoNovo.getDataPedido());
+        pedidoAntigo.setDataPedido(pedidoNovo.getDataPedido());
+        pedidoAntigo.setValorTotal(pedidoNovo.getValorTotal());
+        return pedidoRepository.save(pedidoAntigo);
+    }
+
+
 }

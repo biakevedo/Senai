@@ -16,12 +16,11 @@ import java.util.List;
 public class ItemdopedidoController {
 
     private final ItemdopedidoService itemdopedidoService;
-    private final GenericResponseService responseBuilder;
 
     // Construtor para injeção de dependência
-    public ItemdopedidoController(ItemdopedidoService service, GenericResponseService responseBuilder) {
+    public ItemdopedidoController(ItemdopedidoService service) {
         this.itemdopedidoService = service;
-        this.responseBuilder = responseBuilder;
+
     }
 
     // Listar todos os itens do pedido
@@ -67,6 +66,20 @@ public class ItemdopedidoController {
         // Caso exista, retorna
         return ResponseEntity.ok(itemdopedido);
     }
+    @PutMapping("/itemdopedido/{id}")
+    public ResponseEntity<?> atualizarItemdopedidoPorId(@PathVariable Integer id, @RequestBody Itemdopedido itemdoPedidoNovo) {
+        // Tento atualizar o item do pedido
+        Itemdopedido item = itemdopedidoService.atualizarItemdopedido(id, itemdoPedidoNovo);
+
+        // Se não achar...
+        if (item == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item de pedido " + id + " não encontrado");
+        }
+
+        // Se achar, retorno ok
+        return ResponseEntity.ok(item);
+    }
+
 }
 
 

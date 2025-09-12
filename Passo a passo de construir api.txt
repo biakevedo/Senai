@@ -1,0 +1,112 @@
+Passo a passo de construir um Controller
+
+é a porta de entrada da aplicação. Ele recebe as requisições da API (HTTP), chama o service e retorna a resposta (JSON) para o cliente ou sistema que está consumindo a API
+
+
+package br.com.ecommerce.api.controller;
+
+// Importações necessárias
+import br.com.ecommerce.api.model.Cliente;
+import br.com.ecommerce.api.service.ClienteService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.util.List;
+
+// Indica que esta classe é um Controller REST
+@RestController
+// Define o prefixo da URL para todos os métodos desse controller
+@RequestMapping("/api/clientes")
+public class ClienteController {
+
+    // Injeção de dependência do serviço de clientes
+    private final ClienteService clienteService;
+
+    // Handler para lidar com exceções (caso seja usado no futuro)
+    private final ResponseEntityExceptionHandler responseEntityExceptionHandler;
+
+    // Construtor para o Spring injetar as dependências automaticamente
+    public ClienteController(ClienteService service, ResponseEntityExceptionHandler responseEntityExceptionHandler) {
+        this.clienteService = service;
+        this.responseEntityExceptionHandler = responseEntityExceptionHandler;
+    }
+
+    // ================== ENDPOINTS ==================
+
+    // Endpoint: GET /api/clientes
+    // Objetivo: listar todos os clientes
+    @GetMapping
+    public ResponseEntity<List<Cliente>> findAll() {
+        // Busca todos os clientes na camada de serviço
+        List<Cliente> clientes = clienteService.listarTodos();
+        // Retorna a lista com status 200 (OK)
+        return ResponseEntity.ok(clientes);
+    }
+
+    // Endpoint: POST /api/clientes
+    // Objetivo: cadastrar um novo cliente
+    @PostMapping
+    public ResponseEntity<Cliente> cadastrarCliente(@RequestBody Cliente cliente) {
+        // Salva o cliente no banco
+        clienteService.cadastrarCliente(cliente);
+        // Retorna o cliente criado com status 201 (CREATED)
+        return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
+    }
+
+    // Endpoint: GET /api/clientes/{id}
+    // Objetivo: buscar cliente pelo ID
+    @GetMapping("/{id}")
+    public ResponseEntity<?> buscarClientePorId(@PathVariable Integer id) {
+        // Busca o cliente pelo ID
+        Cliente cliente = clienteService.buscarPorId(id);
+
+        // Se não existir, retorna 404 (NOT FOUND)
+        if (cliente == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Cliente " + id + " não encontrado");
+        }
+
+        // Se existir, retorna 200 (OK) com o cliente
+        return ResponseEntity.ok(cliente);
+    }
+
+    // Endpoint: DELETE /api/clientes/{id}
+    // Objetivo: deletar cliente pelo ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletarClientePorId(@PathVariable Integer id) {
+        // Verifica se o cliente existe
+        Cliente cliente = clienteService.buscarPorId(id);
+
+        // Se não existir, retorna 404
+        if (cliente == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Cliente " + id + " não encontrado");
+        }
+
+        // Se existir, deleta o cliente
+        clienteService.deletarPorId(id);
+
+        // Retorna 204 (NO CONTENT) para indicar que foi deletado com sucesso
+        return ResponseEntity.noContent().build();
+    }
+
+    // Endpoint: PUT /api/clientes/{id}
+    // Objetivo: atualizar cliente pelo ID
+    @PutMapping("/{id}") // <- corrigido (antes estava "/id")
+    public ResponseEntity<?> atualizarClientePorId(@PathVariable Integer id,
+                                                   @RequestBody Cliente clienteNovo) {
+        // Tenta atualizar o cliente
+        Cliente cl = clienteService.atualizarCliente(id, clienteNovo);
+
+        // Se não encontrar o cliente, retorna 404
+        if (cl == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Cliente " + id + " não encontrado");
+        }
+
+        // Se atualizar com sucesso, retorna 200 (OK) com o cliente atualizado
+        return ResponseEntity.ok(cl);
+    }
+}
