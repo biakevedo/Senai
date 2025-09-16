@@ -19,6 +19,8 @@ import lombok.Setter;
 @Entity
 // Table permite que você consigure a tabela
 @Table(name = "tipo_usuario")
+
+// Classe
 public class TipoUsuario {
 
     // JPA - Id define que é chave primária

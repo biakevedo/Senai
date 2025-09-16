@@ -22,11 +22,22 @@ public class Usuario {
     @Column(name = "nome_completo", nullable = false)
     private String nomeCompleto;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "senha", nullable = false)
     private String senha;
+
+    // Muitos usuários para um tipo usuário
+    // Fetch.Type.EAGER - Carrega os dados juntos
+    // optional - Se é obrigatório ou não
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+
+    // Avisar para o java, qual coluna do tipo usuário que vou relacionar
+    @JoinColumn(name = "tipo_usuario_id")
+    private TipoUsuario tipoUsuario;
+
 }
+
 
 
