@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/")
-class EnderecoController {
+@RequestMapping("/api/endereco")
+public class EnderecoController {
 
         private final EnderecoService enderecoService;
 
@@ -39,9 +39,9 @@ class EnderecoController {
         }
 
         @PutMapping("/{id}")
-        public ResponseEntity<?> atualizarEnderecoPorID(@PathVariable Integer id, @RequestBody Endereco tipoUsuarioNovo) {
+        public ResponseEntity<?> atualizarEnderecoPorID(@PathVariable Integer id, @RequestBody Endereco enderecoNovo) {
 
-            Endereco endereco = enderecoService.atualizar(id, tipoUsuarioNovo);
+            Endereco endereco = enderecoService.atualizar(id, enderecoNovo);
 
 
             if (endereco == null) {
