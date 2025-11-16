@@ -1,14 +1,14 @@
-💻 Projeto Java com JPA — CRUD, Banco de Dados e Modelagem (SENAI)
+ Projeto Java com JPA — CRUD, Banco de Dados e Modelagem
 
 Este projeto foi desenvolvido durante o curso de Back-End com Java (SENAI), com o objetivo de aplicar conceitos de modelagem de dados, persistência com JPA/Hibernate e operações CRUD em diferentes contextos de negócio.
 
 O sistema foi dividido em dois módulos principais:
 
-🏥 Clínica Médica — gerenciamento de pacientes, médicos e consultas
+Clínica Médica — gerenciamento de pacientes, médicos e consultas
 
-🛒 E-commerce — controle de produtos, clientes e pedidos
+E-commerce — controle de produtos, clientes e pedidos
 
-⚙️ Tecnologias utilizadas
+Tecnologias utilizadas
 
 Java 17+
 
@@ -28,7 +28,7 @@ Swagger / OpenAPI (documentação da API)
 
 Modelagem voltada para o cadastro e controle de pacientes, médicos e consultas.
 
-🧩 Entidades principais:
+ Entidades principais:
 
 Paciente → nome, CPF, telefone, histórico
 
@@ -36,7 +36,7 @@ Medico → nome, CRM, especialidade
 
 Consulta → data, hora, médico, paciente
 
-🔄 Funcionalidades:
+ Funcionalidades:
 
 CRUD completo de pacientes, médicos e consultas
 
@@ -46,11 +46,11 @@ Validação de dados (campos obrigatórios e formato de CPF)
 
 Listagem de consultas por médico ou paciente
 
-🛍️ Módulo 2 — E-commerce
+ Módulo 2 — E-commerce
 
 Simulação de um pequeno sistema de loja virtual, com produtos, clientes e pedidos.
 
-🧩 Entidades principais:
+ Entidades principais:
 
 Produto → nome, preço, categoria, estoque
 
@@ -60,7 +60,7 @@ Pedido → data, valor total, lista de produtos
 
 ItemPedido → quantidade e valor unitário
 
-🔄 Funcionalidades:
+Funcionalidades:
 
 CRUD de produtos, clientes e pedidos
 
@@ -70,7 +70,7 @@ Cálculo automático do valor total do pedido
 
 Controle de estoque após finalização de compra
 
-🗃️ Banco de Dados
+ Banco de Dados
 
 PostgreSQL configurado no application.properties
 
@@ -91,10 +91,6 @@ Aplicar conceitos de modelagem relacional e JPA
 Desenvolver APIs RESTful seguras e bem estruturadas
 
 Aprender boas práticas de codificação e versionamento (Git/GitHub)
-
-🧠 Possíveis melhorias futuras
-
-Implementar autenticação JWT
 
 Criar módulo de relatórios com filtros avançados
 
